@@ -5,9 +5,17 @@ import cors from "cors"
 import multer from "multer"
 import dotenv from "dotenv"
 import main from "./app.js"
-dotenv.config()
 const app = express()
+app.use(
+	cors({
+		origin: ["https://solana-nf-tminter-client.vercel.app"],
+		methods: ["POST", "GET"],
+		credentials: true,
+	})
+)
 const PORT = 5000
+
+dotenv.config()
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
@@ -40,8 +48,6 @@ const nftMint = mongoose.model("nftMint", WalletSchema)
 app.post("/api/mint", upload.single("image"), async (req, res) => {
 	//I have to use multer and upload the image without that the req.body is emty for some reason?
 	try {
-		// console.log("File:", req.file) // Information about the file
-		// console.log("ID:", req.body.id) // The 'id' field from the form data
 		const fileName = req.file.originalname
 		const id = req.body.id
 		const addy = await main(fileName, id)
