@@ -52,7 +52,9 @@ app.post("/api/mint", upload.single("image"), async (req, res) => {
 		res.status(500).json({ message: error.message })
 	}
 })
-
+app.get(".", (req, res) => {
+	res.status(200).send("Server Alive!")
+})
 app.get("/api/mints", async (req, res) => {
 	try {
 		const mints = await nftMint.find({})
