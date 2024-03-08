@@ -7,12 +7,14 @@ import {
 	toBigNumber,
 } from "@metaplex-foundation/js"
 import * as fs from "fs"
-import secret from "./guideSecret.json" assert { type: "json" }
-
+import dotenv from "dotenv"
+import bs58 from "bs58"
+dotenv.config()
+const SECRET = bs58.decode(process.env.SECRET)
 const QUICKNODE_RPC = "https://api.devnet.solana.com"
 const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC)
 
-const WALLET = Keypair.fromSecretKey(new Uint8Array(secret))
+const WALLET = Keypair.fromSecretKey(new Uint8Array(SECRET))
 
 const METAPLEX = Metaplex.make(SOLANA_CONNECTION)
 	.use(keypairIdentity(WALLET))
