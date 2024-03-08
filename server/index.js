@@ -3,12 +3,11 @@ import express from "express"
 import mongoose from "mongoose"
 import cors from "cors"
 import multer from "multer"
+import dotenv from "dotenv"
 import main from "./app.js"
-
+dotenv.config()
 const app = express()
 const PORT = 5000
-const MONGODB_URI =
-	"mongodb+srv://f20210047:x8kaDlgfFDPXRcZg@cluster0.rc5u3o2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
@@ -27,7 +26,7 @@ app.use(express.json())
 
 // MongoDB connection
 mongoose
-	.connect(MONGODB_URI)
+	.connect(process.env.MONGODB_URI)
 	.then(() => console.log("MongoDB connected"))
 	.catch((err) => console.log(err))
 
