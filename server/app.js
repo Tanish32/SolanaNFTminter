@@ -9,6 +9,7 @@ import {
 import * as fs from "fs"
 import dotenv from "dotenv"
 import bs58 from "bs58"
+import { createMint } from "@solana/spl-token"
 dotenv.config()
 const SECRET = bs58.decode(process.env.SECRET)
 const QUICKNODE_RPC =
@@ -62,22 +63,33 @@ async function uploadMetadata(
 }
 async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 	console.log(`Step 3 - Minting NFT`)
-	const { nft } = await METAPLEX.nfts().create(
-		{
-			uri: metadataUri,
-			name: name,
-			sellerFeeBasisPoints: sellerFee,
-			symbol: symbol,
-			creators: creators,
-			isMutable: false,
-		},
-		{ commitment: "finalized" }
+	// const { nft } = await METAPLEX.nfts().create(
+	// 	{
+	// 		uri: metadataUri,
+	// 		name: name,
+	// 		sellerFeeBasisPoints: sellerFee,
+	// 		symbol: symbol,
+	// 		creators: creators,
+	// 		isMutable: false,
+	// 	},
+	// 	{ commitment: "finalized" }
+	// )
+	const mint = await createMint(
+		SOLANA_CONNECTION,
+
+		WALLET, // payer
+
+		WALLET.publicKey, // mint authority
+
+		WALLET.publicKey, // freeze authority
+
+		0 // Decimals for the token
 	)
 	console.log(`   Success!🎉`)
 	console.log(
-		`   Minted NFT: https://explorer.solana.com/address/${nft.address}?cluster=devnet`
+		`   Minted NFT: https://explorer.solana.com/address/${mint}?cluster=devnet`
 	)
-	return `${nft.address}`
+	return `${mint}`
 }
 const CONFIG = {
 	uploadPath: "tmp/",
