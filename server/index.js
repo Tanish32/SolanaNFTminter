@@ -6,19 +6,12 @@ import multer from "multer"
 import dotenv from "dotenv"
 import main from "./app.js"
 const app = express()
-app.use(
-	cors({
-		origin: ["https://solana-nf-tminter-client.vercel.app"],
-		methods: ["POST", "GET"],
-		credentials: true,
-	})
-)
+
 const PORT = 5000
 
 dotenv.config()
 
 const upload = multer({ storage: multer.memoryStorage() }) // Middleware
-app.use(cors())
 app.use(express.json())
 
 // MongoDB connection
@@ -38,11 +31,13 @@ app.post("/api/mint", upload.single("image"), async (req, res) => {
 	try {
 		const fileName = req.file.originalname
 		const id = req.body.id
-		console.log(req.file)
 		const imgBuffer = req.file.buffer
 		const addy = await main(imgBuffer, fileName, id)
+		console.log("here")
 		const newMint = new nftMint({ nftMinter: id, nftAddressDevnet: addy })
 		newMint.save()
+		console.log("here2")
+
 		res.status(200).json(newMint)
 	} catch (error) {
 		res.status(500).json({ message: error.message })
