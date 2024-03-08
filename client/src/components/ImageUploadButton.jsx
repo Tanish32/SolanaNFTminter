@@ -20,7 +20,7 @@ function ImageUploadButton() {
 		formData.append("id", userAddress)
 
 		const response = await axios.post(
-			"http://localhost:5000/api/mint",
+			"https://solana-nf-tminter-server.vercel.app/api/mint",
 			formData,
 			{
 				headers: {
@@ -42,7 +42,7 @@ function ImageUploadButton() {
 	const getNFTS = async () => {
 		alert("Check console for all NFT data.")
 		axios
-			.get("http://localhost:5000/api/mints")
+			.get("https://solana-nf-tminter-server.vercel.app/api/mints")
 			.then((response) => {
 				console.log(response.data) // Process your data here
 			})
