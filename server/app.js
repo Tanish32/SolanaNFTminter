@@ -26,16 +26,12 @@ const METAPLEX = Metaplex.make(SOLANA_CONNECTION)
 		})
 	)
 
-async function uploadImage(filePath, fileName) {
+async function uploadImage(imgBuffer, filePath, fileName) {
 	console.log(`Step 1 - Uploading Image`)
-	const imgBuffer = fs.readFileSync(filePath + fileName)
 	const imgMetaplexFile = toMetaplexFile(imgBuffer, fileName)
 	const imgUri = await METAPLEX.storage().upload(imgMetaplexFile)
 	console.log(`   Image URI:`, imgUri)
-	fs.unlink(filePath + fileName, (err) => {
-		if (err) throw err
-		console.log("File deleted successfully")
-	})
+
 	return imgUri
 }
 async function uploadMetadata(
@@ -98,13 +94,17 @@ const CONFIG = {
 	creators: [{ address: WALLET.publicKey, share: 100 }],
 }
 
-export default async function main(fileName, id) {
+export default async function main(imgBuffer, fileName, id) {
 	console.log(`Minting ${CONFIG.imgName} to an NFT in Wallet ${id}.`)
 	//change name of uploading file
 	CONFIG.imgFileName = fileName
 	CONFIG.imgName = fileName.slice(0, -4)
 	//Step 1 - Upload Image
-	const imgUri = await uploadImage(CONFIG.uploadPath, CONFIG.imgFileName)
+	const imgUri = await uploadImage(
+		imgBuffer,
+		CONFIG.uploadPath,
+		CONFIG.imgFileName
+	)
 	//Step 2 - Upload Metadata
 	const metadataUri = await uploadMetadata(
 		imgUri,

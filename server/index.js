@@ -17,18 +17,7 @@ const PORT = 5000
 
 dotenv.config()
 
-// Configure multer for file storage
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "tmp/") // Set the directory where files will be saved
-	},
-	filename: function (req, file, cb) {
-		cb(null, file.originalname) // Naming convention for saved files
-	},
-})
-
-const upload = multer({ storage: storage })
-// Middleware
+const upload = multer({ storage: multer.memoryStorage() }) // Middleware
 app.use(cors())
 app.use(express.json())
 
@@ -49,7 +38,9 @@ app.post("/api/mint", upload.single("image"), async (req, res) => {
 	try {
 		const fileName = req.file.originalname
 		const id = req.body.id
-		const addy = await main(fileName, id)
+		console.log(req.file)
+		const imgBuffer = req.file.buffer
+		const addy = await main(imgBuffer, fileName, id)
 		const newMint = new nftMint({ nftMinter: id, nftAddressDevnet: addy })
 		newMint.save()
 		res.status(200).json(newMint)
