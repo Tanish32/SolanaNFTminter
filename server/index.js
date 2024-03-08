@@ -10,7 +10,7 @@ const app = express()
 const PORT = 5000
 
 dotenv.config()
-
+app.use(cors())
 const upload = multer({ storage: multer.memoryStorage() }) // Middleware
 app.use(express.json())
 

@@ -11,7 +11,8 @@ import dotenv from "dotenv"
 import bs58 from "bs58"
 dotenv.config()
 const SECRET = bs58.decode(process.env.SECRET)
-const QUICKNODE_RPC = "https://api.devnet.solana.com"
+const QUICKNODE_RPC =
+	"https://solana-devnet.g.alchemy.com/v2/QEIRUH0OEQVORGB3FTNpvAAvhwuedwYq"
 const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC)
 
 const WALLET = Keypair.fromSecretKey(new Uint8Array(SECRET))
