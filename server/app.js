@@ -32,6 +32,10 @@ async function uploadImage(filePath, fileName) {
 	const imgMetaplexFile = toMetaplexFile(imgBuffer, fileName)
 	const imgUri = await METAPLEX.storage().upload(imgMetaplexFile)
 	console.log(`   Image URI:`, imgUri)
+	fs.unlink(filePath + fileName, (err) => {
+		if (err) throw err
+		console.log("File deleted successfully")
+	})
 	return imgUri
 }
 async function uploadMetadata(
@@ -76,11 +80,10 @@ async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 	console.log(
 		`   Minted NFT: https://explorer.solana.com/address/${nft.address}?cluster=devnet`
 	)
-	console.log(nft)
 	return `${nft.address}`
 }
 const CONFIG = {
-	uploadPath: "uploads/",
+	uploadPath: "tmp/",
 	imgFileName: "image.png",
 	imgType: "image/png",
 	imgName: "QuickNode Pixel",

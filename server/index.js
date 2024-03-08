@@ -20,7 +20,7 @@ dotenv.config()
 // Configure multer for file storage
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, "uploads/") // Set the directory where files will be saved
+		cb(null, "tmp/") // Set the directory where files will be saved
 	},
 	filename: function (req, file, cb) {
 		cb(null, file.originalname) // Naming convention for saved files
@@ -46,7 +46,6 @@ const WalletSchema = new mongoose.Schema({
 const nftMint = mongoose.model("nftMint", WalletSchema)
 
 app.post("/api/mint", upload.single("image"), async (req, res) => {
-	//I have to use multer and upload the image without that the req.body is emty for some reason?
 	try {
 		const fileName = req.file.originalname
 		const id = req.body.id
