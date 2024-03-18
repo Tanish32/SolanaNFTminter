@@ -25,7 +25,7 @@ function ImageUploadButton() {
 		formData.append("id", userAddress)
 		formData.append("name", imgName)
 		const response = await axios.post(
-			"https://sol-nft-server.onrender.com/api/mint",
+			"http://localhost:5000/api/mint",
 			formData,
 			{
 				headers: {
@@ -47,7 +47,7 @@ function ImageUploadButton() {
 	const getNFTS = async () => {
 		alert("Check console for all NFT data.")
 		axios
-			.get("https://sol-nft-server.onrender.com/api/mints")
+			.get("http://localhost:5000/api/mints")
 			.then((response) => {
 				console.log(response.data) // Process your data here
 			})
