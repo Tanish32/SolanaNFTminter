@@ -68,9 +68,9 @@ function ImageUploadButton() {
 			}}>
 			<div
 				style={{
-					padding: "20px",
-					maxWidth: "600px",
-					width: "100%",
+					padding: "50px",
+					maxWidth: "700px",
+					width: "110%",
 					margin: "auto",
 					backgroundColor: "#fff",
 					boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
@@ -89,14 +89,14 @@ function ImageUploadButton() {
 				<input
 					type="file"
 					onChange={uploadImageHandler}
-					style={{ display: "block", marginBottom: "10px" }}
+					style={{ display: "block", marginBottom: "10px", marginTop: "10px" }}
 				/>
 				<button
 					onClick={mintNFT}
 					style={{
 						marginRight: "10px",
 						padding: "5px 15px",
-						backgroundColor: "#4CAF50",
+						backgroundColor: "#018786",
 						color: "white",
 						border: "none",
 						cursor: "pointer",
@@ -108,7 +108,7 @@ function ImageUploadButton() {
 					disabled={isButtonDisabled}
 					style={{
 						padding: "5px 15px",
-						backgroundColor: "#008CBA",
+						backgroundColor: "#018786",
 						color: "white",
 						border: "none",
 						cursor: "pointer",
