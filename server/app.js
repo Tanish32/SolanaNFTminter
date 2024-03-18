@@ -63,33 +63,23 @@ async function uploadMetadata(
 }
 async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 	console.log(`Step 3 - Minting NFT`)
-	// const { nft } = await METAPLEX.nfts().create(
-	// 	{
-	// 		uri: metadataUri,
-	// 		name: name,
-	// 		sellerFeeBasisPoints: sellerFee,
-	// 		symbol: symbol,
-	// 		creators: creators,
-	// 		isMutable: false,
-	// 	},
-	// 	{ commitment: "finalized" }
-	// )
-	const mint = await createMint(
-		SOLANA_CONNECTION,
-
-		WALLET, // payer
-
-		WALLET.publicKey, // mint authority
-
-		WALLET.publicKey, // freeze authority
-
-		0 // Decimals for the token
+	const { nft } = await METAPLEX.nfts().create(
+		{
+			uri: metadataUri,
+			name: name,
+			sellerFeeBasisPoints: sellerFee,
+			symbol: symbol,
+			creators: creators,
+			isMutable: false,
+		},
+		{ commitment: "finalized" }
 	)
+
 	console.log(`   Success!🎉`)
 	console.log(
-		`   Minted NFT: https://explorer.solana.com/address/${mint}?cluster=devnet`
+		`   Minted NFT: https://explorer.solana.com/address/${nft.address}?cluster=devnet`
 	)
-	return `${mint}`
+	return `${nft.address}`
 }
 const CONFIG = {
 	uploadPath: "tmp/",
@@ -111,7 +101,7 @@ export default async function main(imgBuffer, fileName, id) {
 	console.log(`Minting ${CONFIG.imgName} to an NFT in Wallet ${id}.`)
 	//change name of uploading file
 	CONFIG.imgFileName = fileName
-	CONFIG.imgName = fileName.slice(0, -4)
+	// CONFIG.imgName = fileName.slice(0, -4) //THIS WAS THE PAIN POINT idk why this was not working !!!
 	//Step 1 - Upload Image
 	const imgUri = await uploadImage(
 		imgBuffer,

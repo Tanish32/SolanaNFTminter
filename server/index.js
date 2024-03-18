@@ -33,11 +33,9 @@ app.post("/api/mint", upload.single("image"), async (req, res) => {
 		const id = req.body.id
 		const imgBuffer = req.file.buffer
 		const addy = await main(imgBuffer, fileName, id)
-		console.log("here")
+		console.log("Out of Main function!")
 		const newMint = new nftMint({ nftMinter: id, nftAddressDevnet: addy })
 		newMint.save()
-		console.log("here2")
-
 		res.status(200).json(newMint)
 	} catch (error) {
 		res.status(500).json({ message: error.message })
