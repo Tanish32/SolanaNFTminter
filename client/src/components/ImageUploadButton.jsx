@@ -13,7 +13,9 @@ function ImageUploadButton() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const response = await fetch("http://localhost:5000/api/mints")
+			const response = await fetch(
+				"https://sol-nft-server.onrender.com/api/mints"
+			)
 			const newData = await response.json()
 			setData(newData)
 		}
