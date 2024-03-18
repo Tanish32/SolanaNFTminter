@@ -1,5 +1,5 @@
 // src/components/ImageUploadButton.js
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import ConnectWalletButton from "./ConnectWalletButton"
 
@@ -9,6 +9,17 @@ function ImageUploadButton() {
 	const [imgName, setImgName] = useState("")
 	const [symbol, setSymbol] = useState("")
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+	const [data, setData] = useState(null)
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const response = await fetch("http://localhost:5000/api/mints")
+			const newData = await response.json()
+			setData(newData)
+		}
+		fetchData()
+	}, [isButtonDisabled])
+
 	const uploadImageHandler = (e) => {
 		setImage(e.target.files[0])
 	}
@@ -141,6 +152,25 @@ function ImageUploadButton() {
 						onChange={(e) => setSymbol(e.target.value)}
 						style={{ marginBottom: "10px", padding: "5px" }}></input>
 				</form>
+				{data &&
+					data.map((d, index) => (
+						<div style={{ display: "flex", gap: "10px" }}>
+							<a
+								href={`https://explorer.solana.com/address/${d.nftMinter}?cluster=devnet`}
+								target="_blank"
+								rel="noopener noreferrer"
+								style={{ color: "white" }}>
+								Minter {index}
+							</a>
+							<a
+								href={`https://explorer.solana.com/address/${d.nftAddressDevnet}?cluster=devnet`}
+								target="_blank"
+								rel="noopener noreferrer"
+								style={{ color: "white" }}>
+								NFT DevNet address {index}
+							</a>
+						</div>
+					))}
 			</div>
 		</div>
 	)
