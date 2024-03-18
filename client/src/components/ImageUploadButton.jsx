@@ -154,6 +154,7 @@ function ImageUploadButton() {
 						onChange={(e) => setSymbol(e.target.value)}
 						style={{ marginBottom: "10px", padding: "5px" }}></input>
 				</form>
+				{isButtonDisabled && <p>Minting in progress...</p>}
 				{data &&
 					data.map((d, index) => (
 						<div style={{ display: "flex", gap: "10px" }}>
