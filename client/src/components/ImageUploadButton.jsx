@@ -7,6 +7,8 @@ function ImageUploadButton() {
 	const [image, setImage] = useState(null)
 	const [userAddress, setUserAddress] = useState("")
 	const [imgName, setImgName] = useState("")
+	const [symbol, setSymbol] = useState("")
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 	const uploadImageHandler = (e) => {
 		setImage(e.target.files[0])
 	}
@@ -17,13 +19,14 @@ function ImageUploadButton() {
 
 	const mintNFT = async () => {
 		alert("Creating NFT please wait.")
-
+		setIsButtonDisabled(true)
 		if (!image) return
 		console.log(image)
 		const formData = new FormData()
 		formData.append("image", image)
 		formData.append("id", userAddress)
 		formData.append("name", imgName)
+		formData.append("symbol", symbol)
 		const response = await axios.post(
 			"http://localhost:5000/api/mint",
 			formData,
@@ -38,10 +41,8 @@ function ImageUploadButton() {
 			`   Minted NFT: https://explorer.solana.com/address/${response.data.nftAddressDevnet}?cluster=devnet`
 		)
 
-		alert(
-			`   Minted NFT: https://explorer.solana.com/address/${response.data.nftAddressDevnet}?cluster=devnet`,
-			"check console for more details."
-		)
+		alert(` Minted NFT: Check console for more details.`)
+		setIsButtonDisabled(false)
 	}
 
 	const getNFTS = async () => {
@@ -64,7 +65,9 @@ function ImageUploadButton() {
 			/>
 			<input type="file" onChange={uploadImageHandler} />
 			<button onClick={mintNFT}>Mint NFT</button>
-			<button onClick={getNFTS}>Get All NFTs API</button>
+			<button onClick={getNFTS} disabled={isButtonDisabled}>
+				Get All NFTs API
+			</button>
 			<form onSubmit={handleSubmit}>
 				<label htmlFor="imgName">NFT name:</label>
 				<input
@@ -73,6 +76,14 @@ function ImageUploadButton() {
 					name="imgName"
 					value={imgName}
 					onChange={(e) => setImgName(e.target.value)}></input>
+				<label htmlFor="symbol">NFT Symbol:</label>
+
+				<input
+					type="text"
+					id="symbol"
+					name="symbol"
+					value={symbol}
+					onChange={(e) => setSymbol(e.target.value)}></input>
 			</form>
 		</div>
 	)

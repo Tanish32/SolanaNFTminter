@@ -4,12 +4,9 @@ import {
 	keypairIdentity,
 	irysStorage,
 	toMetaplexFile,
-	toBigNumber,
 } from "@metaplex-foundation/js"
-import * as fs from "fs"
 import dotenv from "dotenv"
 import bs58 from "bs58"
-import { createMint } from "@solana/spl-token"
 dotenv.config()
 const SECRET = bs58.decode(process.env.SECRET)
 const QUICKNODE_RPC =
@@ -28,7 +25,7 @@ const METAPLEX = Metaplex.make(SOLANA_CONNECTION)
 		})
 	)
 
-async function uploadImage(imgBuffer, filePath, fileName) {
+async function uploadImage(imgBuffer, fileName) {
 	console.log(`Step 1 - Uploading Image`)
 	const imgMetaplexFile = toMetaplexFile(imgBuffer, fileName)
 	const imgUri = await METAPLEX.storage().upload(imgMetaplexFile)
@@ -61,7 +58,14 @@ async function uploadMetadata(
 	console.log("   Metadata URI:", uri)
 	return uri
 }
-async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
+async function mintNft(
+	metadataUri,
+	name,
+	sellerFee,
+	symbol,
+	creators,
+	receiver
+) {
 	console.log(`Step 3 - Minting NFT`)
 	const { nft } = await METAPLEX.nfts().create(
 		{
@@ -74,7 +78,6 @@ async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 		},
 		{ commitment: "finalized" }
 	)
-	const receiver = new PublicKey("Gi1rq9oxNFUaRQc8iuDyuNBXPPde6mXfpAj1tqgu4XbM")
 	console.log(`Transfering NFT to caller`)
 	await METAPLEX.nfts().transfer({
 		nftOrSft: nft,
@@ -89,34 +92,26 @@ async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 	return `${nft.address}`
 }
 const CONFIG = {
-	uploadPath: "tmp/",
 	imgFileName: "image.png",
 	imgType: "image/png",
 	imgName: " Gang Wars",
-	description: "Pixel infrastructure for everyone!",
-	attributes: [
-		{ trait_type: "Speed", value: "Quick" },
-		{ trait_type: "Type", value: "Pixelated" },
-		{ trait_type: "Background", value: "QuickNode Blue" },
-	],
+	description: "",
 	sellerFeeBasisPoints: 500, //500 bp = 5%
 	symbol: "",
 	creators: [{ address: WALLET.publicKey, share: 100 }],
 }
 
-export default async function main(imgBuffer, name, id) {
+export default async function main(imgBuffer, name, id, sybmol) {
 	//change name of uploading file
 	CONFIG.imgFileName = name
 	// CONFIG.imgName = fileName.slice(0, -4) //THIS WAS THE PAIN POINT idk why this was not working !!!
 	CONFIG.imgName = name
-
+	CONFIG.symbol = sybmol
+	const receiver = new PublicKey(id)
+	CONFIG.creators[0].address = receiver
 	console.log(`Minting ${CONFIG.imgName} to an NFT in Wallet ${id}.`)
 	//Step 1 - Upload Image
-	const imgUri = await uploadImage(
-		imgBuffer,
-		CONFIG.uploadPath,
-		CONFIG.imgFileName
-	)
+	const imgUri = await uploadImage(imgBuffer, CONFIG.imgFileName)
 	//Step 2 - Upload Metadata
 	const metadataUri = await uploadMetadata(
 		imgUri,
@@ -131,7 +126,8 @@ export default async function main(imgBuffer, name, id) {
 		CONFIG.imgName,
 		CONFIG.sellerFeeBasisPoints,
 		CONFIG.symbol,
-		CONFIG.creators
+		CONFIG.creators,
+		CONFIG.creators[0].address
 	)
 
 	return tokenAddress

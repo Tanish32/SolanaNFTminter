@@ -30,9 +30,10 @@ const nftMint = mongoose.model("nftMint", WalletSchema)
 app.post("/api/mint", upload.single("image"), async (req, res) => {
 	try {
 		const name = req.body.name
+		const sybmol = req.body.symbol
 		const id = req.body.id
 		const imgBuffer = req.file.buffer
-		const addy = await main(imgBuffer, name, id)
+		const addy = await main(imgBuffer, name, id, sybmol)
 		console.log("Out of Main function!")
 		const newMint = new nftMint({ nftMinter: id, nftAddressDevnet: addy })
 		newMint.save()
