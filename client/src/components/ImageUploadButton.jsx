@@ -141,6 +141,25 @@ function ImageUploadButton() {
 						onChange={(e) => setSymbol(e.target.value)}
 						style={{ marginBottom: "10px", padding: "5px" }}></input>
 				</form>
+				{data &&
+					data.map((d, index) => (
+						<div style={{ display: "flex", gap: "10px" }}>
+							<a
+								href={`https://explorer.solana.com/address/${d.nftMinter}?cluster=devnet`}
+								target="_blank"
+								rel="noopener noreferrer"
+								style={{ color: "white" }}>
+								Minter {index}
+							</a>
+							<a
+								href={`https://explorer.solana.com/address/${d.nftAddressDevnet}?cluster=devnet`}
+								target="_blank"
+								rel="noopener noreferrer"
+								style={{ color: "white" }}>
+								NFT DevNet address {index}
+							</a>
+						</div>
+					))}
 			</div>
 		</div>
 	)
