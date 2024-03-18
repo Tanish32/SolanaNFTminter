@@ -58,32 +58,66 @@ function ImageUploadButton() {
 	}
 
 	return (
-		<div>
+		<div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
 			<ConnectWalletButton
 				userAddress={userAddress}
 				setUserAddress={setUserAddress}
+				style={{ marginBottom: "10px" }}
 			/>
-			<input type="file" onChange={uploadImageHandler} />
-			<button onClick={mintNFT}>Mint NFT</button>
-			<button onClick={getNFTS} disabled={isButtonDisabled}>
+			<input
+				type="file"
+				onChange={uploadImageHandler}
+				style={{ display: "block", marginBottom: "10px" }}
+			/>
+			<button
+				onClick={mintNFT}
+				style={{
+					marginRight: "10px",
+					padding: "5px 15px",
+					backgroundColor: "#4CAF50",
+					color: "white",
+					border: "none",
+					cursor: "pointer",
+				}}>
+				Mint NFT
+			</button>
+			<button
+				onClick={getNFTS}
+				disabled={isButtonDisabled}
+				style={{
+					padding: "5px 15px",
+					backgroundColor: "#008CBA",
+					color: "white",
+					border: "none",
+					cursor: "pointer",
+				}}>
 				Get All NFTs API
 			</button>
-			<form onSubmit={handleSubmit}>
-				<label htmlFor="imgName">NFT name:</label>
+			<form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
+				<label htmlFor="imgName" style={{ marginRight: "10px" }}>
+					NFT name:
+				</label>
 				<input
 					type="text"
 					id="imgName"
 					name="imgName"
 					value={imgName}
-					onChange={(e) => setImgName(e.target.value)}></input>
-				<label htmlFor="symbol">NFT Symbol:</label>
-
+					onChange={(e) => setImgName(e.target.value)}
+					style={{
+						marginBottom: "10px",
+						marginRight: "10px",
+						padding: "5px",
+					}}></input>
+				<label htmlFor="symbol" style={{ marginRight: "10px" }}>
+					NFT Symbol:
+				</label>
 				<input
 					type="text"
 					id="symbol"
 					name="symbol"
 					value={symbol}
-					onChange={(e) => setSymbol(e.target.value)}></input>
+					onChange={(e) => setSymbol(e.target.value)}
+					style={{ marginBottom: "10px", padding: "5px" }}></input>
 			</form>
 		</div>
 	)
