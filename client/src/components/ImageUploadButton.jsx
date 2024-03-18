@@ -58,67 +58,90 @@ function ImageUploadButton() {
 	}
 
 	return (
-		<div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-			<ConnectWalletButton
-				userAddress={userAddress}
-				setUserAddress={setUserAddress}
-				style={{ marginBottom: "10px" }}
-			/>
-			<input
-				type="file"
-				onChange={uploadImageHandler}
-				style={{ display: "block", marginBottom: "10px" }}
-			/>
-			<button
-				onClick={mintNFT}
+		<div
+			style={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				minHeight: "100vh",
+				backgroundColor: "#6200EE",
+			}}>
+			<div
 				style={{
-					marginRight: "10px",
-					padding: "5px 15px",
-					backgroundColor: "#4CAF50",
+					padding: "20px",
+					maxWidth: "600px",
+					width: "100%",
+					margin: "auto",
+					backgroundColor: "#fff",
+					boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
+					transition: "0.3s",
+					borderRadius: "5px",
+					fontFamily: "Arial, sans-serif",
+					boxSizing: "border-box",
+					backgroundColor: "#3700B3",
 					color: "white",
-					border: "none",
-					cursor: "pointer",
 				}}>
-				Mint NFT
-			</button>
-			<button
-				onClick={getNFTS}
-				disabled={isButtonDisabled}
-				style={{
-					padding: "5px 15px",
-					backgroundColor: "#008CBA",
-					color: "white",
-					border: "none",
-					cursor: "pointer",
-				}}>
-				Get All NFTs API
-			</button>
-			<form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
-				<label htmlFor="imgName" style={{ marginRight: "10px" }}>
-					NFT name:
-				</label>
+				<ConnectWalletButton
+					userAddress={userAddress}
+					setUserAddress={setUserAddress}
+					style={{ marginBottom: "10px" }}
+				/>
 				<input
-					type="text"
-					id="imgName"
-					name="imgName"
-					value={imgName}
-					onChange={(e) => setImgName(e.target.value)}
+					type="file"
+					onChange={uploadImageHandler}
+					style={{ display: "block", marginBottom: "10px" }}
+				/>
+				<button
+					onClick={mintNFT}
 					style={{
-						marginBottom: "10px",
 						marginRight: "10px",
-						padding: "5px",
-					}}></input>
-				<label htmlFor="symbol" style={{ marginRight: "10px" }}>
-					NFT Symbol:
-				</label>
-				<input
-					type="text"
-					id="symbol"
-					name="symbol"
-					value={symbol}
-					onChange={(e) => setSymbol(e.target.value)}
-					style={{ marginBottom: "10px", padding: "5px" }}></input>
-			</form>
+						padding: "5px 15px",
+						backgroundColor: "#4CAF50",
+						color: "white",
+						border: "none",
+						cursor: "pointer",
+					}}>
+					Mint NFT
+				</button>
+				<button
+					onClick={getNFTS}
+					disabled={isButtonDisabled}
+					style={{
+						padding: "5px 15px",
+						backgroundColor: "#008CBA",
+						color: "white",
+						border: "none",
+						cursor: "pointer",
+					}}>
+					Get All NFTs API
+				</button>
+				<form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
+					<label htmlFor="imgName" style={{ marginRight: "10px" }}>
+						NFT name:
+					</label>
+					<input
+						type="text"
+						id="imgName"
+						name="imgName"
+						value={imgName}
+						onChange={(e) => setImgName(e.target.value)}
+						style={{
+							marginBottom: "10px",
+							marginRight: "10px",
+							padding: "5px",
+						}}></input>
+					<label htmlFor="symbol" style={{ marginRight: "10px" }}>
+						NFT Symbol:
+					</label>
+					<input
+						type="text"
+						id="symbol"
+						name="symbol"
+						value={symbol}
+						onChange={(e) => setSymbol(e.target.value)}
+						style={{ marginBottom: "10px", padding: "5px" }}></input>
+				</form>
+			</div>
 		</div>
 	)
 }
