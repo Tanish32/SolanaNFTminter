@@ -1,5 +1,5 @@
 // src/components/ImageUploadButton.js
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import axios from "axios"
 import ConnectWalletButton from "./ConnectWalletButton"
 
@@ -9,6 +9,16 @@ function ImageUploadButton() {
 	const [imgName, setImgName] = useState("")
 	const [symbol, setSymbol] = useState("")
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+	const [data, setData] = useState(null)
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const response = await fetch("http://localhost:5000/api/mints")
+			const newData = await response.json()
+			setData(newData)
+		}
+		fetchData()
+	}, [isButtonDisabled])
 	const uploadImageHandler = (e) => {
 		setImage(e.target.files[0])
 	}
