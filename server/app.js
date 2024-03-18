@@ -74,7 +74,14 @@ async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 		},
 		{ commitment: "finalized" }
 	)
-
+	const receiver = new PublicKey("Gi1rq9oxNFUaRQc8iuDyuNBXPPde6mXfpAj1tqgu4XbM")
+	//To transfer
+	await METAPLEX.nfts().transfer({
+		nftOrSft: nft,
+		authority: WALLET,
+		fromOwner: WALLET.publicKey,
+		toOwner: receiver,
+	})
 	console.log(`   Success!🎉`)
 	console.log(
 		`   Minted NFT: https://explorer.solana.com/address/${nft.address}?cluster=devnet`
@@ -85,7 +92,7 @@ const CONFIG = {
 	uploadPath: "tmp/",
 	imgFileName: "image.png",
 	imgType: "image/png",
-	imgName: "QuickNode Pixel",
+	imgName: " Gang Wars",
 	description: "Pixel infrastructure for everyone!",
 	attributes: [
 		{ trait_type: "Speed", value: "Quick" },
@@ -102,6 +109,7 @@ export default async function main(imgBuffer, fileName, id) {
 	//change name of uploading file
 	CONFIG.imgFileName = fileName
 	// CONFIG.imgName = fileName.slice(0, -4) //THIS WAS THE PAIN POINT idk why this was not working !!!
+	//
 	//Step 1 - Upload Image
 	const imgUri = await uploadImage(
 		imgBuffer,
