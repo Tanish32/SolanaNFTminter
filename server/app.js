@@ -75,7 +75,7 @@ async function mintNft(metadataUri, name, sellerFee, symbol, creators) {
 		{ commitment: "finalized" }
 	)
 	const receiver = new PublicKey("Gi1rq9oxNFUaRQc8iuDyuNBXPPde6mXfpAj1tqgu4XbM")
-	//To transfer
+	console.log(`Transfering NFT to caller`)
 	await METAPLEX.nfts().transfer({
 		nftOrSft: nft,
 		authority: WALLET,
@@ -104,12 +104,13 @@ const CONFIG = {
 	creators: [{ address: WALLET.publicKey, share: 100 }],
 }
 
-export default async function main(imgBuffer, fileName, id) {
-	console.log(`Minting ${CONFIG.imgName} to an NFT in Wallet ${id}.`)
+export default async function main(imgBuffer, name, id) {
 	//change name of uploading file
-	CONFIG.imgFileName = fileName
+	CONFIG.imgFileName = name
 	// CONFIG.imgName = fileName.slice(0, -4) //THIS WAS THE PAIN POINT idk why this was not working !!!
-	//
+	CONFIG.imgName = name
+
+	console.log(`Minting ${CONFIG.imgName} to an NFT in Wallet ${id}.`)
 	//Step 1 - Upload Image
 	const imgUri = await uploadImage(
 		imgBuffer,

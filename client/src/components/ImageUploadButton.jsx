@@ -6,9 +6,13 @@ import ConnectWalletButton from "./ConnectWalletButton"
 function ImageUploadButton() {
 	const [image, setImage] = useState(null)
 	const [userAddress, setUserAddress] = useState("")
-
+	const [imgName, setImgName] = useState("")
 	const uploadImageHandler = (e) => {
 		setImage(e.target.files[0])
+	}
+	const handleSubmit = (event) => {
+		event.preventDefault()
+		console.log("Username:", imgName)
 	}
 
 	const mintNFT = async () => {
@@ -19,7 +23,7 @@ function ImageUploadButton() {
 		const formData = new FormData()
 		formData.append("image", image)
 		formData.append("id", userAddress)
-
+		formData.append("name", imgName)
 		const response = await axios.post(
 			"https://sol-nft-server.onrender.com/api/mint",
 			formData,
@@ -61,6 +65,15 @@ function ImageUploadButton() {
 			<input type="file" onChange={uploadImageHandler} />
 			<button onClick={mintNFT}>Mint NFT</button>
 			<button onClick={getNFTS}>Get All NFTs API</button>
+			<form onSubmit={handleSubmit}>
+				<label htmlFor="imgName">NFT name:</label>
+				<input
+					type="text"
+					id="imgName"
+					name="imgName"
+					value={imgName}
+					onChange={(e) => setImgName(e.target.value)}></input>
+			</form>
 		</div>
 	)
 }
