@@ -120,13 +120,14 @@ function ImageUploadButton() {
 					disabled={isButtonDisabled}
 					style={{
 						padding: "5px 15px",
-						backgroundColor: "#018786",
+						backgroundColor: isButtonDisabled ? "#01878680" : "#018786", // Make background color faded when disabled
 						color: "white",
 						border: "none",
-						cursor: "pointer",
+						cursor: isButtonDisabled ? "default" : "pointer", // Change cursor to default when disabled
 					}}>
 					Get All NFTs API
 				</button>
+
 				<form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
 					<label htmlFor="imgName" style={{ marginRight: "10px" }}>
 						NFT name:
